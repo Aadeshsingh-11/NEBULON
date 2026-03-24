@@ -1,0 +1,27 @@
+# Python Config & Virtual Environments
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+
+# Security (DO NOT UPLOAD API KEYS!)
+.env
+
+# Database (Keeps user data private)
+bizsense.db
+*.sqlite3
+
+# Node.js Frontend (Prevents uploading 50,000+ framework files)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Configuration Files
+.DS_Store
+Thumbs.db

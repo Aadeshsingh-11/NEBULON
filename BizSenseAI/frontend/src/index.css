@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+
+/* Hide Native Browser Number Spin Arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 8%;
+    --foreground: 213 31% 95%;
+
+    --card: 217 53% 11%;
+    --card-foreground: 213 31% 95%;
+
+    --popover: 217 53% 11%;
+    --popover-foreground: 213 31% 95%;
+
+    --primary: 187 86% 43%;
+    --primary-foreground: 222 47% 8%;
+
+    --secondary: 258 60% 66%;
+    --secondary-foreground: 213 31% 95%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 258 60% 66%;
+    --accent-foreground: 213 31% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 213 31% 95%;
+
+    --success: 160 64% 40%;
+    --success-foreground: 213 31% 95%;
+
+    --border: 215 25% 27%;
+    --input: 215 25% 27%;
+    --ring: 187 86% 43%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 222 50% 7%;
+    --sidebar-foreground: 215 20% 65%;
+    --sidebar-primary: 187 86% 43%;
+    --sidebar-primary-foreground: 222 47% 8%;
+    --sidebar-accent: 187 86% 43%;
+    --sidebar-accent-foreground: 213 31% 95%;
+    --sidebar-border: 215 25% 20%;
+    --sidebar-ring: 187 86% 43%;
+
+    --glass-bg: 217 53% 11% / 0.6;
+    --glass-border: 215 25% 27% / 0.5;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsla(var(--glass-bg));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsla(var(--glass-border));
+  }
+
+  .glass-strong {
+    background: hsla(217, 53%, 11%, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsla(215, 25%, 27%, 0.6);
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(187 86% 43%), hsl(258 60% 66%));
+  }
+
+  .gradient-primary-text {
+    background: linear-gradient(135deg, hsl(187 86% 43%), hsl(258 60% 66%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px hsla(187, 86%, 43%, 0.15), 0 0 60px hsla(187, 86%, 43%, 0.05);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px hsla(258, 60%, 66%, 0.15), 0 0 60px hsla(258, 60%, 66%, 0.05);
+  }
+
+  .hover-lift {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px hsla(217, 53%, 5%, 0.5);
+  }
+
+  .input-glow:focus {
+    box-shadow: 0 0 0 2px hsla(187, 86%, 43%, 0.3), 0 0 20px hsla(187, 86%, 43%, 0.1);
+    border-color: hsl(187 86% 43%);
+  }
+
+  .trend-pill-positive {
+    @apply text-xs font-medium px-2 py-0.5 rounded-full;
+    background: hsla(160, 64%, 40%, 0.15);
+    color: hsl(160 64% 50%);
+  }
+
+  .trend-pill-negative {
+    @apply text-xs font-medium px-2 py-0.5 rounded-full;
+    background: hsla(0, 84%, 60%, 0.15);
+    color: hsl(0 84% 60%);
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(90deg, hsla(217, 53%, 15%, 1) 25%, hsla(217, 53%, 20%, 1) 50%, hsla(217, 53%, 15%, 1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}

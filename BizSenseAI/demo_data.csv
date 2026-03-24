@@ -1,0 +1,14 @@
+month,revenue,expenses,category
+Jan 2023,250000,180000,General Operations
+Feb 2023,280000,195000,General Operations
+Mar 2023,310000,210000,Marketing
+Apr 2023,340000,225000,General Operations
+May 2023,390000,240000,General Operations
+Jun 2023,450000,250000,Sales & Marketing
+Jul 2023,480000,265000,General Operations
+Aug 2023,510000,880000,Server Outage / Infrastructure (Anomaly)
+Sep 2023,560000,250000,General Operations
+Oct 2023,620000,280000,Festive Season Sales
+Nov 2023,710000,310000,Festive Season Sales
+Dec 2023,850000,350000,Year-end Clearance
+Jan 2024,920000,400000,Marketing Scaling
