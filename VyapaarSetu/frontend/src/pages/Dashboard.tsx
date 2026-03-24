@@ -10,6 +10,7 @@ import LiveNews from "@/components/dashboard/LiveNews";
 import Settings from "@/components/dashboard/Settings";
 import HealthScore from "@/components/dashboard/HealthScore";
 import MLPredictor from "@/components/dashboard/MLPredictor";
+import Reports from "@/pages/Reports";
 import { BizSenseProvider } from "@/hooks/useBizSense";
 
 const DashboardContent = ({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) => {
@@ -37,6 +38,7 @@ const DashboardContent = ({ activeTab, setActiveTab }: { activeTab: string, setA
       )}
       {activeTab === 'health' && <HealthScore />}
       {activeTab === 'mlpredictor' && <MLPredictor />}
+      {activeTab === 'reports' && <Reports />}
       {activeTab === 'livenews' && <LiveNews />}
       {activeTab === 'settings' && <Settings />}
     </main>
@@ -50,6 +52,7 @@ const Dashboard = () => {
   if (activeTab === 'datasetup') title = 'Data Management';
   if (activeTab === 'health') title = 'Business Health Score';
   if (activeTab === 'mlpredictor') title = 'Linear Neural Revenue Predictor';
+  if (activeTab === 'reports') title = 'Business Report Generator';
   if (activeTab === 'livenews') title = 'Live Business News';
   if (activeTab === 'settings') title = 'Account Settings';
 
@@ -58,8 +61,15 @@ const Dashboard = () => {
       <div className="flex min-h-screen bg-background">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-16 border-b border-border flex items-center justify-between px-8 shrink-0">
+        <div 
+          className="flex-1 flex flex-col min-w-0 relative"
+          style={{ 
+            backgroundColor: "#FAFAFA", 
+            backgroundImage: "radial-gradient(circle, #D1D5DB 1px, transparent 1px)", 
+            backgroundSize: "24px 24px" 
+          }}
+        >
+          <header className="h-16 border-b border-slate-200/60 bg-white/70 backdrop-blur-md flex items-center justify-between px-8 shrink-0 sticky top-0 z-10">
             <h1 className="text-lg font-semibold text-foreground">{title}</h1>
             <div className="flex items-center gap-3">
               <div className="glass rounded-lg px-4 py-2 text-sm text-muted-foreground flex items-center gap-2 cursor-pointer hover:border-primary/50 transition-colors">

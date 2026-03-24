@@ -269,21 +269,27 @@ import xml.etree.ElementTree as ET
 @app.route('/api/news', methods=['GET'])
 def get_news():
     try:
-        url = "https://www.moneycontrol.com/rss/business.xml"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req) as response:
+        url = "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
+        with urllib.request.urlopen(req, timeout=10) as response:
             xml_data = response.read()
         root = ET.fromstring(xml_data)
+        import re
         news_items = []
         for item in root.findall('.//item')[:8]:
             t = item.find('title')
             l = item.find('link')
             d = item.find('description')
             p = item.find('pubDate')
+            
+            desc_text = d.text if d is not None else ''
+            desc_text = re.sub(r'<[^>]*>', '', desc_text).strip()
+            if len(desc_text) > 150: desc_text = desc_text[:150] + "..."
+            
             news_items.append({
                 'title': t.text if t is not None else '',
                 'link': l.text if l is not None else '',
-                'description': d.text if d is not None else '',
+                'description': desc_text,
                 'pubDate': p.text if p is not None else ''
             })
         return jsonify({'status': 'success', 'data': news_items})
@@ -381,6 +387,48 @@ def get_ml_prediction():
         return jsonify({'status': 'success', 'historical': historical, 'predictions': future})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'ML Training Error: {str(e)}'}), 500
+
+@app.route('/api/generate-report', methods=['GET'])
+def generate_report():
+    user_id = get_current_user_id()
+    if not user_id: return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401
+    
+    data = database.get_financial_data(user_id)
+    if not data: return jsonify({'status': 'error', 'message': 'No data available to generate report'})
+
+    prompt = f"""
+    You are a Chartered Accountant writing a formal financial summary report. 
+    Based on these numbers: {data}, 
+    write a 3-4 sentence executive summary in formal CA-style English. Be specific with numbers.
+    Also generate a 1-sentence cash flow verdict.
+    Return ONLY pure JSON matching this exact structure:
+    {{
+      "executive_summary": "For the period ending... operations resulted in...",
+      "cash_flow_verdict": "Healthy cash position. Receivables are...",
+      "top_categories": [
+        {{"name": "CategoryName", "amount": 50000, "percentage": 45}},
+        {{"name": "CategoryName2", "amount": 30000, "percentage": 25}}
+      ],
+      "total_revenue": 100000,
+      "total_expenses": 80000,
+      "net_profit": 20000,
+      "chart_data": [ {{"month": "Jan", "revenue": 10000, "expenses": 8000}} ],
+      "health_score": 85,
+      "cash_flow_metrics": {{"Operating": 15000, "Investing": -2000, "Financing": 0}}
+    }}
+    Do not output markdown. Only exact raw JSON.
+    """
+    if not groq_client: return jsonify({'status': 'error', 'message': 'Groq client not initialized. Check API Key.'})
+    try:
+        completion = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"}
+        )
+        parsed = json.loads(completion.choices[0].message.content.strip())
+        return jsonify({'status': 'success', 'data': parsed})
+    except Exception as e:
+        return handle_groq_error(e)
 
 if __name__ == '__main__':
     app.run(debug=True)
