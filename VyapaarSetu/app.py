@@ -72,6 +72,8 @@ def upload_csv():
         try:
             df = pd.read_csv(file)
             df.columns = df.columns.astype(str).str.lower().str.strip()
+            if 'expense' in df.columns and 'expenses' not in df.columns:
+                df = df.rename(columns={'expense': 'expenses'})
             required_cols = ['month', 'revenue', 'expenses', 'category']
             if not all(col in df.columns for col in required_cols):
                 return jsonify({'status': 'error', 'message': 'CSV must contain: month, revenue, expenses, category'})
@@ -311,6 +313,8 @@ def upload_daily_csv():
         try:
             df = pd.read_csv(file)
             df.columns = df.columns.astype(str).str.lower().str.strip()
+            if 'expense' in df.columns and 'expenses' not in df.columns:
+                df = df.rename(columns={'expense': 'expenses'})
             if 'month' in df.columns and 'date' not in df.columns:
                 df = df.rename(columns={'month': 'date'})
             

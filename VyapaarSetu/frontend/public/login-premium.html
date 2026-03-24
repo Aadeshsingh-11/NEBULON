@@ -1,64 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const [particles, setParticles] = useState<any[]>([]);
-
-  useEffect(() => {
-    // Generate 20 floating particles
-    const newParticles = [];
-    const colors = ['#6366f1', '#ec4899', '#f8fafc'];
-    for(let i=0; i<20; i++) {
-        newParticles.push({
-            id: i,
-            size: Math.random() * 4 + 2,
-            x: Math.random() * 100,
-            duration: Math.random() * 8 + 8,
-            delay: Math.random() * 10,
-            color: colors[Math.floor(Math.random() * colors.length)]
-        });
-    }
-    setParticles(newParticles);
-
-    const saved = localStorage.getItem('bizsense_email');
-    if (saved) handleLoginDirect(saved);
-  }, []);
-
-  const handleLoginDirect = async (emailToUse: string) => {
-    setLoading(true);
-    try {
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ email: emailToUse, name: emailToUse.split('@')[0] })
-        });
-        if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
-        const json = await res.json();
-        if (json.status === 'success') {
-            localStorage.setItem('bizsense_email', emailToUse);
-            navigate("/dashboard");
-        } else alert(json.message);
-    } catch(err: any) {
-        alert("Failed to login: Server may not be running. " + (err.message || ''));
-    } finally {
-        setLoading(false);
-    }
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return alert("Email required!");
-    handleLoginDirect(email);
-  };
-
-  return (
-    <>
-      <style>{`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VyapaarSetu - Enterprise Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<style>
   :root {
     --navy-1: #0A0F1E;
     --navy-2: #0f1535;
@@ -67,7 +16,8 @@ const Login = () => {
     --pink: #ec4899;
     --amber: #f59e0b;
   }
-  .login-wrapper {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
     font-family: 'DM Sans', sans-serif;
     display: flex;
     height: 100vh;
@@ -75,7 +25,7 @@ const Login = () => {
     overflow: hidden;
     background: #fff;
   }
-  .login-wrapper h1, .login-wrapper h2, .login-wrapper h3, .login-wrapper h4, .sora { font-family: 'Sora', sans-serif; }
+  h1, h2, h3, h4, .sora { font-family: 'Sora', sans-serif; }
   
   /* LEFT PANEL */
   .left-panel {
@@ -266,145 +216,153 @@ const Login = () => {
     .left-panel { display: none; }
     .right-panel { width: 100%; padding: 40px 20px; }
   }
-      `}</style>
+</style>
+</head>
+<body>
 
-      <div className="login-wrapper">
-        {/* LEFT PANEL */}
-        <div className="left-panel">
-          <div className="grid-bg"></div>
-          <div className="orb orb-1"></div>
-          <div className="orb orb-2"></div>
-          <div className="orb orb-3"></div>
-          
-          <div id="particles">
-            {particles.map(p => (
-                <div 
-                  key={p.id}
-                  className="particle"
-                  style={{
-                      width: `${p.size}px`,
-                      height: `${p.size}px`,
-                      left: `${p.x}%`,
-                      background: p.color,
-                      boxShadow: `0 0 ${p.size*2}px ${p.color}`,
-                      animationDuration: `${p.duration}s`,
-                      animationDelay: `${p.delay}s`
-                  }}
-                />
-            ))}
-          </div>
+<div class="left-panel">
+  <div class="grid-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div id="particles"></div>
 
-          <div className="content-z">
-            <div>
-              <h1 className="headline">From Records to<br/><span className="grad-text">Real Insights</span></h1>
-              <p className="subtitle">The ultimate financial copilot designed exclusively for Indian SMEs. Gain unparalleled visibility into your cash flow, automate tracking, and forecast your growth.</p>
-            </div>
-            
-            <div className="stats-row">
-              <div className="stat-card">
-                <span className="stat-icon">📊</span>
-                <div><div className="stat-val" style={{ fontSize: "1.1rem" }}>--</div><div className="stat-label">Revenue Tracked</div></div>
-              </div>
-              <div className="stat-card">
-                <span className="stat-icon">✓</span>
-                <div><div className="stat-val" style={{ fontSize: "1.1rem" }}>--</div><div className="stat-label">GST Accuracy</div></div>
-              </div>
-              <div className="stat-card">
-                <span className="stat-icon">🏢</span>
-                <div><div className="stat-val" style={{ fontSize: "1.1rem" }}>--</div><div className="stat-label">Active SMEs</div></div>
-              </div>
-            </div>
+  <div class="content-z">
+    <div>
+      <h1 class="headline">From Records to<br><span class="grad-text">Real Insights</span></h1>
+      <p class="subtitle">The ultimate financial copilot designed exclusively for Indian SMEs. Gain unparalleled visibility into your cash flow, automate tracking, and forecast your growth.</p>
+    </div>
+    
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-icon">📊</span>
+        <div><div class="stat-val" style="font-size: 1.1rem">--</div><div class="stat-label">Revenue Tracked</div></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">✓</span>
+        <div><div class="stat-val" style="font-size: 1.1rem">--</div><div class="stat-label">GST Accuracy</div></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏢</span>
+        <div><div class="stat-val" style="font-size: 1.1rem">--</div><div class="stat-label">Active SMEs</div></div>
+      </div>
+    </div>
 
-            <div className="glass-float-container">
-              <div className="glass-card fc-1">
-                <div className="gc-val">GST Auto-Filing</div>
-                <div className="gc-meta">File returns in one click</div>
-              </div>
-              <div className="glass-card fc-2">
-                <div className="gc-val">Cash Flow Forecast</div>
-                <div className="gc-meta">AI-powered predictions</div>
-              </div>
-              <div className="glass-card fc-3">
-                <div className="gc-val">Invoice Tracking</div>
-                <div className="gc-meta">Real-time status updates</div>
-              </div>
-              <div className="glass-card fc-4">
-                <div className="gc-val">Smart Reports</div>
-                <div className="gc-meta">Instant P&L and balance sheet</div>
-              </div>
-            </div>
+    <div class="glass-float-container">
+      <div class="glass-card fc-1">
+        <div class="gc-val">GST Auto-Filing</div>
+        <div class="gc-meta">File returns in one click</div>
+      </div>
+      <div class="glass-card fc-2">
+        <div class="gc-val">Cash Flow Forecast</div>
+        <div class="gc-meta">AI-powered predictions</div>
+      </div>
+      <div class="glass-card fc-3">
+        <div class="gc-val">Invoice Tracking</div>
+        <div class="gc-meta">Real-time status updates</div>
+      </div>
+      <div class="glass-card fc-4">
+        <div class="gc-val">Smart Reports</div>
+        <div class="gc-meta">Instant P&L and balance sheet</div>
+      </div>
+    </div>
 
-            <div className="testimonial">
-              <div className="stars">★★★★★</div>
-              <div className="quote">"VyapaarSetu completely transformed how we view our monthly cash flow. What used to take days of Excel crunching now happens instantly with their ML Predictor. Simply magic."</div>
-              <div className="author">
-                <div className="avatar">AK</div>
-                <div>
-                  <div className="a-name">Ankit Kumar</div>
-                  <div className="a-role">Founder, TechCart India</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="ticker-wrap">
-            <div className="ticker-inner">
-              <div className="ticker-item">RELIANCE <span className="text-green">▲2.4%</span></div>
-              <div className="ticker-item">TCS <span className="text-green">▲1.1%</span></div>
-              <div className="ticker-item">NIFTY50 <span className="text-red">▼0.3%</span></div>
-              <div className="ticker-item">HDFC <span className="text-green">▲0.8%</span></div>
-              <div className="ticker-item">INR/USD <span style={{ color: "#fff" }}>83.4</span></div>
-              <div className="ticker-item">SENSEX <span className="text-green">▲0.6%</span></div>
-              <div className="ticker-item">RELIANCE <span className="text-green">▲2.4%</span></div>
-              <div className="ticker-item">TCS <span className="text-green">▲1.1%</span></div>
-              <div className="ticker-item">NIFTY50 <span className="text-red">▼0.3%</span></div>
-              <div className="ticker-item">HDFC <span className="text-green">▲0.8%</span></div>
-              <div className="ticker-item">INR/USD <span style={{ color: "#fff" }}>83.4</span></div>
-              <div className="ticker-item">SENSEX <span className="text-green">▲0.6%</span></div>
-              <div className="ticker-item">RELIANCE <span className="text-green">▲2.4%</span></div>
-              <div className="ticker-item">TCS <span className="text-green">▲1.1%</span></div>
-              <div className="ticker-item">NIFTY50 <span className="text-red">▼0.3%</span></div>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT PANEL */}
-        <div className="right-panel">
-          <div className="login-container">
-            <div className="logo-area">
-              <img src="/logo.png" alt="VyapaarSetu" style={{ height: "56px", objectFit: "contain" }} />
-              <div className="logo-text">
-                <h2 className="sora">VyapaarSetu</h2>
-                <p>SME Financial CoPilot</p>
-              </div>
-            </div>
-
-            <h2 className="form-title sora">Welcome Back</h2>
-            <p className="form-subtitle">Log in to your financial dashboard</p>
-
-            <form onSubmit={handleLogin}>
-              <div className="input-grp">
-                <label>Work Email</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@company.com" required />
-              </div>
-              <div className="input-grp">
-                <div className="input-header">
-                  <label style={{ margin: 0 }}>Password</label>
-                  <a href="#" className="forgot-link">Forgot password?</a>
-                </div>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required />
-              </div>
-              <button disabled={loading} type="submit" className="cta-btn">{loading ? "Authenticating..." : "Sign In to Dashboard →"}</button>
-            </form>
-
-            <div className="divider"><span>OR</span></div>
-            <div className="register-link">New to VyapaarSetu? <a href="#">Request Access</a></div>
-          </div>
-          
-          <div className="trust-badge">· TRUSTED BY 500+ INDIAN SMES & ENTERPRISES ·</div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="quote">"VyapaarSetu completely transformed how we view our monthly cash flow. What used to take days of Excel crunching now happens instantly with their ML Predictor. Simply magic."</div>
+      <div class="author">
+        <div class="avatar">AK</div>
+        <div>
+          <div class="a-name">Ankit Kumar</div>
+          <div class="a-role">Founder, TechCart India</div>
         </div>
       </div>
-    </>
-  );
-};
-export default Login;
+    </div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <div class="ticker-item">RELIANCE <span class="text-green">▲2.4%</span></div>
+      <div class="ticker-item">TCS <span class="text-green">▲1.1%</span></div>
+      <div class="ticker-item">NIFTY50 <span class="text-red">▼0.3%</span></div>
+      <div class="ticker-item">HDFC <span class="text-green">▲0.8%</span></div>
+      <div class="ticker-item">INR/USD <span style="color:#fff">83.4</span></div>
+      <div class="ticker-item">SENSEX <span class="text-green">▲0.6%</span></div>
+      <div class="ticker-item">RELIANCE <span class="text-green">▲2.4%</span></div>
+      <div class="ticker-item">TCS <span class="text-green">▲1.1%</span></div>
+      <div class="ticker-item">NIFTY50 <span class="text-red">▼0.3%</span></div>
+      <div class="ticker-item">HDFC <span class="text-green">▲0.8%</span></div>
+      <div class="ticker-item">INR/USD <span style="color:#fff">83.4</span></div>
+      <div class="ticker-item">SENSEX <span class="text-green">▲0.6%</span></div>
+      <div class="ticker-item">RELIANCE <span class="text-green">▲2.4%</span></div>
+      <div class="ticker-item">TCS <span class="text-green">▲1.1%</span></div>
+      <div class="ticker-item">NIFTY50 <span class="text-red">▼0.3%</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="right-panel">
+  <div class="login-container">
+    <div class="logo-area">
+      <img src="/logo.png" alt="VyapaarSetu" style="height: 56px; object-fit: contain;">
+      <div class="logo-text">
+        <h2 class="sora">VyapaarSetu</h2>
+        <p>SME Financial CoPilot</p>
+      </div>
+    </div>
+
+    <h2 class="form-title sora">Welcome Back</h2>
+    <p class="form-subtitle">Log in to your financial dashboard</p>
+
+    <form onsubmit="event.preventDefault(); alert('Login clicked!');">
+      <div class="input-grp">
+        <label>Work Email</label>
+        <input type="email" placeholder="you@company.com" required>
+      </div>
+      <div class="input-grp">
+        <div class="input-header">
+          <label style="margin:0">Password</label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <input type="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="cta-btn">Sign In to Dashboard &rarr;</button>
+    </form>
+
+    <div class="divider"><span>OR</span></div>
+    <div class="register-link">New to VyapaarSetu? <a href="#">Request Access</a></div>
+  </div>
+  
+  <div class="trust-badge">· TRUSTED BY 500+ INDIAN SMES & ENTERPRISES ·</div>
+</div>
+
+<script>
+  // Generate 20 floating particles with random positions and delays
+  const container = document.getElementById('particles');
+  const colors = ['#6366f1', '#ec4899', '#f8fafc'];
+  
+  for(let i=0; i<20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    
+    // Randomize properties
+    const size = Math.random() * 4 + 2;
+    const x = Math.random() * 100;
+    const duration = Math.random() * 8 + 8;
+    const delay = Math.random() * 10;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = x + '%';
+    p.style.background = color;
+    p.style.boxShadow = `0 0 ${size*2}px ${color}`;
+    p.style.animationDuration = duration + 's';
+    p.style.animationDelay = delay + 's';
+    
+    container.appendChild(p);
+  }
+</script>
+
+</body>
+</html>

@@ -81,7 +81,7 @@ const ChatWidget = () => {
             className="fixed bottom-24 right-6 w-[380px] h-[500px] glass-strong rounded-2xl flex flex-col z-50 overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.5)] glow-cyan"
           >
             <div className="px-5 py-4 border-b border-border flex items-center gap-3 bg-[rgba(30,41,59,0.5)] backdrop-blur-md">
-              <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-sm shadow-[0_0_10px_rgba(6,182,212,0.3)] text-white">🤖</div>
+              <img src="/logo.png" alt="Bot" className="w-8 h-8 rounded-full object-cover shadow-[0_0_10px_rgba(6,182,212,0.3)] bg-white p-0.5" />
               <div>
                 <p className="text-sm font-semibold text-foreground">VyapaarSetu Assistant</p>
                 <p className="text-xs text-emerald-400">● Online</p>

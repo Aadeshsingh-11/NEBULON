@@ -26,9 +26,8 @@ const Sidebar = ({ activeTab, setActiveTab }: { activeTab: string, setActiveTab:
 
   return (
     <aside className="w-[260px] min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col shrink-0">
-      <div className="p-6 border-b border-sidebar-border">
-        <h1 className="text-xl font-bold gradient-primary-text">VyapaarSetu</h1>
-        <p className="text-xs text-muted-foreground mt-0.5">SME Financial CoPilot</p>
+      <div className="py-5 px-4 border-b border-sidebar-border flex items-center justify-center">
+        <img src="/logo.png" alt="VyapaarSetu" className="w-[180px] h-auto object-contain" />
       </div>
 
       <div className="px-6 py-4 border-b border-sidebar-border flex items-center gap-3">
