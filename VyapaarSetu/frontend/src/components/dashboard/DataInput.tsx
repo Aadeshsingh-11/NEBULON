@@ -11,6 +11,36 @@ const DataInput = ({ setActiveTab }: { setActiveTab?: (t: string) => void }) => 
   const [category, setCategory] = useState("");
   const [month, setMonth] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const mlFileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleMLFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        toast.info("Uploading Daily ML Data...", { id: 'ml-upload' });
+        const res = await fetch('/api/upload-daily', {
+            method: 'POST',
+            body: formData
+        });
+        if (res.status === 401) {
+            localStorage.removeItem('bizsense_email');
+            window.location.href = '/';
+            return;
+        }
+        const json = await res.json();
+        if (json.status === 'success') {
+            toast.success("Daily ML Data successfully synced with Scikit-Learn Engine!", { id: 'ml-upload' });
+            if (mlFileInputRef.current) mlFileInputRef.current.value = "";
+            if (setActiveTab) setActiveTab('mlpredictor');
+        } else {
+            toast.error(json.message, { id: 'ml-upload' });
+        }
+    } catch(e) {
+        toast.error("Upload failed.", { id: 'ml-upload' });
+    }
+  };
 
   const handleManualEntry = async () => {
     if ((!revenueAmt && !expenseAmt) || !month) return toast.error("Month and at least one amount are required");
@@ -117,7 +147,7 @@ const DataInput = ({ setActiveTab }: { setActiveTab?: (t: string) => void }) => 
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
       {/* Upload CSV */}
       <div className="glass rounded-xl p-5 hover-lift">
         <h3 className="text-sm font-semibold text-foreground mb-3">📁 Upload CSV</h3>
@@ -137,6 +167,28 @@ const DataInput = ({ setActiveTab }: { setActiveTab?: (t: string) => void }) => 
             Click to upload your CSV file
           </p>
           <p className="text-xs text-muted-foreground mt-1">Requires month, revenue, expenses, category</p>
+        </div>
+      </div>
+
+      {/* Upload ML Dataset */}
+      <div className="glass rounded-xl p-5 hover-lift">
+        <h3 className="text-sm font-semibold text-foreground mb-3">🤖 Upload ML Dataset</h3>
+        <input 
+            type="file" 
+            accept=".csv" 
+            ref={mlFileInputRef} 
+            onChange={handleMLFileUpload} 
+            className="hidden" 
+        />
+        <div 
+            onClick={() => mlFileInputRef.current?.click()}
+            className="border-2 border-dashed border-primary/40 bg-primary/5 rounded-lg p-8 text-center hover:border-primary/80 transition-colors cursor-pointer flex flex-col items-center justify-center flex-1 h-[148px]"
+        >
+          <p className="text-3xl mb-1">📈</p>
+          <p className="text-sm text-foreground font-medium leading-none">
+            Dense Daily Dataset
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">Requires date, revenue, expenses</p>
         </div>
       </div>
 

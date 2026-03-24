@@ -33,6 +33,15 @@ def setup_db():
                             category TEXT,
                             FOREIGN KEY (user_id) REFERENCES users (id)
                         );''')
+            # Create daily_transactions table
+            c.execute('''CREATE TABLE IF NOT EXISTS daily_transactions (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            user_id INTEGER NOT NULL,
+                            date TEXT NOT NULL,
+                            revenue REAL NOT NULL,
+                            expenses REAL NOT NULL,
+                            FOREIGN KEY (user_id) REFERENCES users (id)
+                        );''')
             conn.commit()
         except Error as e:
             print(e)
@@ -102,6 +111,31 @@ def insert_financial_data(user_id, month, revenue, expenses, category):
     c = conn.cursor()
     c.execute("INSERT INTO financials(user_id, month, revenue, expenses, category) VALUES(?,?,?,?,?)", 
               (user_id, month, revenue, expenses, category))
+    conn.commit()
+    conn.close()
+
+def get_daily_data(user_id):
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute("SELECT id, date, revenue, expenses FROM daily_transactions WHERE user_id=? ORDER BY date ASC", (user_id,))
+    rows = c.fetchall()
+    conn.close()
+    data = []
+    for row in rows:
+        data.append({'id': row[0], 'date': row[1], 'revenue': row[2], 'expenses': row[3]})
+    return data
+
+def reset_daily_data(user_id):
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute("DELETE FROM daily_transactions WHERE user_id=?", (user_id,))
+    conn.commit()
+    conn.close()
+
+def insert_daily_data(user_id, date, revenue, expenses):
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute("INSERT INTO daily_transactions(user_id, date, revenue, expenses) VALUES(?,?,?,?)", (user_id, date, revenue, expenses))
     conn.commit()
     conn.close()
 

@@ -16,10 +16,10 @@ const KPIGrid = () => {
   const growth = ((lastRev - firstRev) / firstRev) * 100;
 
   const kpis = [
-    { title: "Total Revenue", value: `₹${totalRev.toLocaleString()}`, trend: "", positive: true, color: "hsl(187 86% 43%)" },
-    { title: "Total Expenses", value: `₹${totalExp.toLocaleString()}`, trend: "", positive: false, color: "hsl(0 84% 60%)" },
-    { title: "Net Profit", value: `₹${netProfit.toLocaleString()}`, trend: "", positive: true, color: "hsl(160 64% 40%)" },
-    { title: "Growth", value: `${growth.toFixed(1)}%`, trend: growth >= 0 ? `↑ ${growth.toFixed(1)}%` : `↓ ${Math.abs(growth).toFixed(1)}%`, positive: growth >= 0, color: "hsl(258 60% 66%)" },
+    { title: "Total Revenue", value: `₹${totalRev.toLocaleString()}`, trend: "", positive: true, color: "hsl(230 70% 65%)" },
+    { title: "Total Expenses", value: `₹${totalExp.toLocaleString()}`, trend: "", positive: false, color: "hsl(350 80% 75%)" },
+    { title: "Net Profit", value: `₹${netProfit.toLocaleString()}`, trend: "", positive: true, color: "hsl(150 50% 65%)" },
+    { title: "Growth", value: `${growth.toFixed(1)}%`, trend: growth >= 0 ? `↑ ${growth.toFixed(1)}%` : `↓ ${Math.abs(growth).toFixed(1)}%`, positive: growth >= 0, color: "hsl(270 60% 75%)" },
   ];
 
   return (

@@ -3,3 +3,4 @@ google-genai
 pandas
 werkzeug
 python-dotenv
+scikit-learn

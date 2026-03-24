@@ -16,8 +16,7 @@ const AnomalyAlert = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, height: 0, marginBottom: 0 }}
           transition={{ duration: 0.3 }}
-          className="w-full rounded-lg border-l-4 border-destructive px-4 py-3 mb-6 flex items-center justify-between"
-          style={{ background: "hsla(0, 84%, 60%, 0.08)" }}
+          className="w-full rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-3 mb-6 flex items-center justify-between shadow-sm"
         >
           <p className="text-sm text-foreground">
             <span className="mr-2">⚠️</span>

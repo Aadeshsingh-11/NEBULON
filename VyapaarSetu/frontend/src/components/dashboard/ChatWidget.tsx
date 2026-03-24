@@ -22,7 +22,7 @@ const TypingIndicator = () => (
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-      { role: 'model', content: "Hello! I'm your BizSense AI assistant. How can I help you with your financials today?" }
+      { role: 'model', content: "Hello! I'm your VyapaarSetu assistant. How can I help you with your financials today?" }
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -83,7 +83,7 @@ const ChatWidget = () => {
             <div className="px-5 py-4 border-b border-border flex items-center gap-3 bg-[rgba(30,41,59,0.5)] backdrop-blur-md">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-sm shadow-[0_0_10px_rgba(6,182,212,0.3)] text-white">🤖</div>
               <div>
-                <p className="text-sm font-semibold text-foreground">BizSense Assistant</p>
+                <p className="text-sm font-semibold text-foreground">VyapaarSetu Assistant</p>
                 <p className="text-xs text-emerald-400">● Online</p>
               </div>
             </div>

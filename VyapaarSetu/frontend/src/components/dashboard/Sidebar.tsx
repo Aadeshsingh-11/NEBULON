@@ -19,6 +19,7 @@ const Sidebar = ({ activeTab, setActiveTab }: { activeTab: string, setActiveTab:
     { id: "dashboard", icon: "📊", label: "Dashboard" },
     { id: "datasetup", icon: "📁", label: "Data Setup" },
     { id: "health", icon: "🩺", label: "Health Score" },
+    { id: "mlpredictor", icon: "🤖", label: "ML Predictor" },
     { id: "livenews", icon: "📰", label: "Live News" },
     { id: "settings", icon: "⚙️", label: "Settings" },
   ];
@@ -26,7 +27,7 @@ const Sidebar = ({ activeTab, setActiveTab }: { activeTab: string, setActiveTab:
   return (
     <aside className="w-[260px] min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col shrink-0">
       <div className="p-6 border-b border-sidebar-border">
-        <h1 className="text-xl font-bold gradient-primary-text">BizSense AI</h1>
+        <h1 className="text-xl font-bold gradient-primary-text">VyapaarSetu</h1>
         <p className="text-xs text-muted-foreground mt-0.5">SME Financial CoPilot</p>
       </div>
 

@@ -93,7 +93,7 @@ const Login = () => {
       >
         <div className="text-center mb-8">
           <motion.div animate={{ opacity: [0.8, 1, 0.8] }} transition={{ duration: 3, repeat: Infinity }}>
-            <h1 className="text-3xl font-bold gradient-primary-text mb-1">BizSense AI</h1>
+            <h1 className="text-3xl font-bold gradient-primary-text mb-1">VyapaarSetu</h1>
           </motion.div>
           <p className="text-muted-foreground text-sm">SME Financial CoPilot</p>
         </div>

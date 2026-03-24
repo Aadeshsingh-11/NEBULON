@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 from groq import Groq
 import database
 import json
+import numpy as np
+from sklearn.linear_model import Ridge
+from datetime import datetime, timedelta
 
 load_dotenv()
 app = Flask(__name__)
@@ -68,6 +71,7 @@ def upload_csv():
     if file and file.filename.endswith('.csv'):
         try:
             df = pd.read_csv(file)
+            df.columns = df.columns.astype(str).str.lower().str.strip()
             required_cols = ['month', 'revenue', 'expenses', 'category']
             if not all(col in df.columns for col in required_cols):
                 return jsonify({'status': 'error', 'message': 'CSV must contain: month, revenue, expenses, category'})
@@ -294,6 +298,85 @@ def update_settings():
         database.update_user(user_id, new_name)
         session['user_name'] = new_name
     return jsonify({'status': 'success', 'message': 'Updated'})
+
+@app.route('/api/upload-daily', methods=['POST'])
+def upload_daily_csv():
+    user_id = get_current_user_id()
+    if not user_id: return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401
+    if 'file' not in request.files: return jsonify({'status': 'error', 'message': 'No file part'})
+    file = request.files['file']
+    if file.filename == '': return jsonify({'status': 'error', 'message': 'No selected file'})
+    
+    if file and file.filename.endswith('.csv'):
+        try:
+            df = pd.read_csv(file)
+            df.columns = df.columns.astype(str).str.lower().str.strip()
+            if 'month' in df.columns and 'date' not in df.columns:
+                df = df.rename(columns={'month': 'date'})
+            
+            required_cols = ['date', 'revenue', 'expenses']
+            if not all(col in df.columns for col in required_cols):
+                return jsonify({'status': 'error', 'message': 'CSV must contain: date, revenue, expenses'})
+            
+            database.reset_daily_data(user_id)
+            for _, row in df.iterrows():
+                database.insert_daily_data(user_id, str(row['date']), float(row['revenue']), float(row['expenses']))
+            return jsonify({'status': 'success'})
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': str(e)})
+    return jsonify({'status': 'error', 'message': 'Invalid file format'})
+
+@app.route('/api/ml-predict', methods=['GET'])
+def get_ml_prediction():
+    user_id = get_current_user_id()
+    if not user_id: return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401
+    
+    data = database.get_daily_data(user_id)
+    if not data or len(data) < 7:
+        return jsonify({'status': 'error', 'message': 'Not enough data. Upload at least 7 days of historical transactions.'})
+        
+    try:
+        df = pd.DataFrame(data)
+        df['date_obj'] = pd.to_datetime(df['date'])
+        df = df.sort_values('date_obj').reset_index(drop=True)
+        
+        X = df['date_obj'].map(datetime.toordinal).values.reshape(-1, 1)
+        y_rev = df['revenue'].values
+        y_exp = df['expenses'].values
+        
+        model_rev = Ridge(alpha=1.0)
+        model_exp = Ridge(alpha=1.0)
+        model_rev.fit(X, y_rev)
+        model_exp.fit(X, y_exp)
+        
+        last_date = df['date_obj'].max()
+        future_dates = [last_date + timedelta(days=i) for i in range(1, 31)]
+        X_future = np.array([d.toordinal() for d in future_dates]).reshape(-1, 1)
+        
+        pred_rev = model_rev.predict(X_future)
+        pred_exp = model_exp.predict(X_future)
+        
+        historical = []
+        for _, row in df.iterrows():
+            historical.append({
+                'date': row['date_obj'].strftime('%Y-%m-%d'),
+                'revenue': round(row['revenue'], 2),
+                'expenses': round(row['expenses'], 2),
+                'isFuture': False
+            })
+            
+        future = []
+        for i in range(30):
+            future.append({
+                'date': future_dates[i].strftime('%Y-%m-%d'),
+                'revenue': max(0, round(pred_rev[i], 2)),
+                'expenses': max(0, round(pred_exp[i], 2)),
+                'isFuture': True
+            })
+            
+        return jsonify({'status': 'success', 'historical': historical, 'predictions': future})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'ML Training Error: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

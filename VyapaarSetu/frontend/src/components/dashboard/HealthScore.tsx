@@ -126,8 +126,8 @@ const HealthScore = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="glass rounded-xl p-6 border-b-2 border-rose-500/50 shadow-md">
-                    <h3 className="text-lg font-bold text-rose-400 mb-4 flex items-center gap-2">⚠️ Top Identified Risks</h3>
+                <div className="glass rounded-xl p-6 border border-destructive/20 bg-destructive/5 shadow-sm">
+                    <h3 className="text-lg font-bold text-destructive mb-4 flex items-center gap-2">⚠️ Top Identified Risks</h3>
                     <ul className="space-y-3">
                         {data.top_risks?.map((r: string, i: number) => (
                             <li key={i} className="text-sm text-foreground flex items-start gap-3">
@@ -137,8 +137,8 @@ const HealthScore = () => {
                         ))}
                     </ul>
                 </div>
-                <div className="glass rounded-xl p-6 border-b-2 border-emerald-500/50 shadow-md">
-                    <h3 className="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2">🚀 Leverage Opportunities</h3>
+                <div className="glass rounded-xl p-6 border border-success/30 bg-success/5 shadow-sm">
+                    <h3 className="text-lg font-bold text-success mb-4 flex items-center gap-2">🚀 Leverage Opportunities</h3>
                     <ul className="space-y-3">
                         {data.top_opportunities?.map((o: string, i: number) => (
                             <li key={i} className="text-sm text-foreground flex items-start gap-3">

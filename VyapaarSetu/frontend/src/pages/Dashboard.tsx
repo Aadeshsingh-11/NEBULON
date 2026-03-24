@@ -9,6 +9,7 @@ import ChatWidget from "@/components/dashboard/ChatWidget";
 import LiveNews from "@/components/dashboard/LiveNews";
 import Settings from "@/components/dashboard/Settings";
 import HealthScore from "@/components/dashboard/HealthScore";
+import MLPredictor from "@/components/dashboard/MLPredictor";
 import { BizSenseProvider } from "@/hooks/useBizSense";
 
 const DashboardContent = ({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) => {
@@ -23,7 +24,7 @@ const DashboardContent = ({ activeTab, setActiveTab }: { activeTab: string, setA
             <div className="mt-8 mb-4 shadow-xl shadow-cyan-500/10 rounded-xl overflow-hidden">
               <button 
                 onClick={() => setActiveTab('health')} 
-                className="w-full py-5 text-lg rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-extrabold hover:shadow-[0_0_30px_rgba(8,145,178,0.5)] transition-all hover-lift active:scale-[0.99] flex items-center justify-center gap-3"
+                className="w-full py-5 text-lg rounded-xl bg-gradient-to-r from-primary to-secondary text-background font-extrabold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all hover-lift active:scale-[0.99] flex items-center justify-center gap-3"
               >
                 <span className="text-2xl">🩺</span>
                 <span>Check Business Health Score</span>
@@ -35,6 +36,7 @@ const DashboardContent = ({ activeTab, setActiveTab }: { activeTab: string, setA
           <DataInput setActiveTab={setActiveTab} />
       )}
       {activeTab === 'health' && <HealthScore />}
+      {activeTab === 'mlpredictor' && <MLPredictor />}
       {activeTab === 'livenews' && <LiveNews />}
       {activeTab === 'settings' && <Settings />}
     </main>
@@ -47,6 +49,7 @@ const Dashboard = () => {
   let title = 'Financial Overview';
   if (activeTab === 'datasetup') title = 'Data Management';
   if (activeTab === 'health') title = 'Business Health Score';
+  if (activeTab === 'mlpredictor') title = 'Linear Neural Revenue Predictor';
   if (activeTab === 'livenews') title = 'Live Business News';
   if (activeTab === 'settings') title = 'Account Settings';
 
