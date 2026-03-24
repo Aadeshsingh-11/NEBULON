@@ -68,24 +68,6 @@ Your app will be live at `http://localhost:5173` (or whichever port Vite allocat
 
 ---
 
-## 🌍 Deployment Guide
-
-VyapaarSetu is fully production-ready and built to be deployed on modern cloud architecture.
-
-**1. Deploying the Frontend (Vercel / Netlify)**
-* Point Vercel to the `VyapaarSetu/frontend` directory.
-* Build Command: `npm run build`
-* Output Directory: `dist`
-* Update your `vite.config.ts` proxy to point to the live backend URL rather than `localhost:5000`.
-
-**2. Deploying the Backend (Render / Railway / Heroku)**
-* Point the service to the `VyapaarSetu` directory.
-* Set the Build Command: `pip install -r requirements.txt`
-* Set the Start Command: `gunicorn app:app` (Make sure to add `gunicorn` to your requirements.txt).
-* Add `GROQ_API_KEY` to the environment variables in your deployment dashboard.
-
----
-
 ## 🛡️ Privacy & Security
 VyapaarSetu utilizes local SQLite database sessions ensuring strict tenant isolation. API keys input by users are transmitted securely to the backend for immediate inference, avoiding long-term permanent storage of third-party keys unless explicitly requested via the Settings panel.
 
